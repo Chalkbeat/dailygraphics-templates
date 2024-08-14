@@ -7,6 +7,7 @@
     margin: 0 0 18px 0;
     padding: 0;
     list-style-type: none;
+    font-family: @sans-serif;
 
     .key-item {
       display: inline-block;
@@ -68,32 +69,21 @@
 /* Grid Map
 ========================================*/
 
-.tile-grid-map {
-  margin-bottom: 33px;
-}
-
-.state {
-  fill: #eee;
+.states path:not(.state-active) {
+  fill: #F8F8F8;
 }
 
 .label {
-  font-family: "Knockout 31 4r";
-  font-size: 12px;
+  font-family: @sans-serif;
+  font-size: 15px;
   fill: #979797;
-}
+  pointer-events: none;
 
-.label-active {
-  fill: #fff;
-}
-
-@media screen and (max-width: 500px) {
-  .label {
-    font-size: 15px;
+  @media @desktop {
+    font-size: 10px;
   }
-}
 
-@media screen and (min-width: 500px) {
-  .label {
-    font-size: 8px;
+  &.label-active {
+    fill: #fff;
   }
 }
