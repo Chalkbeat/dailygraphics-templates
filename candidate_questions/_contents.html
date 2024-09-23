@@ -4,13 +4,11 @@
 
 <%
   for (var c of candidates) {
-    for (var q in c) {
-      for (var question of questions) {
-        var q = question.short;
-        var text = c[q] || `*${COPY.labels.noresponse}*`;
-        text = text.replace(/•/g, "-").replace(/\n{1}/g, "\n\n").replace(/ {2,}/g, " ");
-        c[q] = t.renderMarkdown(text);
-      }
+    for (var question of questions) {
+      var q = question.short;
+      var text = c[q] || `*${COPY.labels.noresponse}*`;
+      text = text.replace(/•/g, "-").replace(/\n{1}/g, "\n\n").replace(/ {2,}/g, " ");
+      c[q] = t.renderMarkdown(text);
     }
   }
 %>
