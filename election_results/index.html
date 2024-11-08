@@ -1,0 +1,86 @@
+<%= await t.include("lib/_head.html") %>
+
+<!--
+
+Make copies of this file, with no changes, to create new embeds. The `embed`
+column in the sheet will control whether it shows up on any given page.
+Leaving that column blank means a graphic will appear on all pages.
+
+-->
+
+<div class="as-of">
+  <%
+    var formatter = Intl.DateTimeFormat("en-us", {
+      timeZone: "America/New_York",
+      hour: "numeric",
+      minute: "numeric",
+      day: "numeric",
+      month: "long",
+      timeZoneName: "short"
+    });
+  %>
+  Results as of: <local-time value="<%= Date.now() %>"><%= formatter.format(new Date()) %></local-time>
+  <% if (COPY.labels.reporting) { %>
+  <br><%= COPY.labels.reporting %>
+  <% } %>
+</div>
+
+<%
+  var [ here ] = __basename.split(".");
+  var rows = COPY.data.filter(r => {
+    if (!r.embed) return true;
+    var pages = r.embed.split(/,\s*/);
+    return pages.includes(here);
+  });
+  var groups = Object.groupBy(rows, r => r.group);
+%>
+
+<% for (var group in groups) { %>
+<div class="result-container">
+  <h1><%= group %></h2>
+
+  <% if (COPY.labels[group]) { %>
+  <p class="group-chatter"><%= COPY.labels[group] %>
+  <% } %>
+
+  <%
+    var results = groups[group];
+    var max = Math.max(...results.map(r => r.votes));
+  %>
+  
+  <div class="results-table">
+    <% for (var row of results) { %>
+    <div class="row <%= row.winner ? "winner" : "candidate" %> <%= row.party %>">
+      <div class="bar" style="width: <%= max == 0 ? 100 : row.votes / max * 100 %>%"></div>
+      <div class="name">
+        <%= row.candidate %><%= row.incumbent ? "&ast;" : "" %><% if (row.party) { %> (<%= row.party %>)<% } %>
+      </div>
+      <div class="votes">
+        <%= row.percentage %>
+        <br>
+        <%= row.votes.toLocaleString() %> votes
+      </div>
+      <div class="flags">
+        <%= row.winner ? "&#9745;" : "" %> 
+      </div>
+    </div>
+    <% } %>
+  </div>
+</div>
+<% } %>
+
+<% if (COPY.labels.footnote) { %>
+<div class="footnotes">
+  <h4>Notes</h4>
+  <p><%= COPY.labels.footnote %></p>
+</div>
+<% } %>
+
+<div class="footer">
+  <% if (COPY.labels.source) { %><p>Source: <%= COPY.labels.source %></p><% } %>
+  <% if (COPY.labels.credit) { %><p>Credit: <%= COPY.labels.credit %></p><% } %>
+</div>
+
+<script src="./graphic.js"></script>
+
+<%= await t.include("lib/_foot.html") %>

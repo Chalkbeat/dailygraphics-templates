@@ -1,0 +1,106 @@
+@import "./lib/base";
+
+@subgrid: subgrid;
+
+:root {
+  --bar-height: 12px;
+}
+
+.as-of {
+  font-family: @sans-serif;
+  font-size: 12px;
+  text-align: right;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.result-container {
+  margin-bottom: 24px;
+}
+
+h1 {
+  font-weight: normal;
+}
+
+.results-table {
+  display: grid;
+  grid-template-columns: 5fr auto 2em;
+  font-family: @sans-serif;
+  align-items: middle;
+
+  @supports not (grid-template-columns: @subgrid) {
+    & .row > * {
+      padding: 6px 0;
+      border-top: 1px solid #E8E8E8;
+    }
+  }
+}
+
+.row {
+  grid-template-columns: subgrid;
+  grid-column: 1 / 5;
+  position: relative;
+  padding-top: calc(var(--bar-height) + 4px);
+  margin: 0 0 6px;
+  align-items: start;
+  font-size: 18px;
+  border-top: 1px solid #E8E8E8;
+  display: grid;
+
+  @supports not (grid-template-columns: @subgrid) {
+    display: contents;
+  }
+}
+
+.bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: var(--bar-height);
+  background-color: @gray2;
+  background-image: linear-gradient(to right, #0004, transparent);
+  z-index: -1;
+
+  @supports not (grid-template-columns: @subgrid) {
+    display: none;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    border-style: solid;
+    border-color: transparent white white transparent;
+    border-width: calc(var(--bar-height) * .6) calc(var(--bar-height) * .4);
+  }
+
+  .R & {
+    background-color: @red1;
+  }
+
+  .D & {
+    background-color: @blue1;
+  }
+
+  .Y & {
+    background-color: @green2;
+  }
+
+  .N & {
+    background-color: @red2;
+  }
+}
+
+.name {
+  font-weight: bold;
+}
+
+.votes {
+  font-size: 80%;
+  text-align: right;
+}
+
+.flags {
+  font-weight: bold;
+  text-align: center;
+}
