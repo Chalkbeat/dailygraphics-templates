@@ -5,6 +5,7 @@
   --spacing-right: 16px;
   --decrease: @peach2;
   --increase: @teal2;
+  --label-width: 150px;
 }
 
 .arrow.graphic {
@@ -12,7 +13,7 @@
 
   .columns {
     display: grid;
-    grid-template-columns: 150px 1fr;
+    grid-template-columns: var(--label-width, 150px) 1fr;
     gap: var(--spacing-left);
   }
 

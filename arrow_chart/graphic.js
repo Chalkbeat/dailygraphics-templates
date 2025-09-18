@@ -51,23 +51,24 @@ var draw = function() {
       ${arrows.map(l => {
         var unit = l.from < l.to ? 1 : -1;
         return svg`
-        <path
-          class="track"
-          d="M0,${l.y} H${bounds.width}"
-        />
-        <path class="arrow ${unit > 0 ? "increase" : "decrease"}"
-          d="
-            M${scale(l.from)},${l.y}
-            H${scale(l.to)}"
-          data-series=${l.group}
-        />
-        <path class="arrow head ${unit > 0 ? "increase" : "decrease"}"
-          d="
-            M${scale(l.to)},${l.y}
-            m${-HEAD * unit},${-HEAD}
-            l${HEAD * unit},${HEAD}
-            l${-HEAD * unit},${HEAD}"
-        />
+        <g class="arrow-row" data-series=${l.group}>
+          <path
+            class="track"
+            d="M0,${l.y} H${bounds.width}"
+          />
+          <path class="arrow ${unit > 0 ? "increase" : "decrease"}"
+            d="
+              M${scale(l.from)},${l.y}
+              H${scale(l.to)}"
+          />
+          <path class="arrow head ${unit > 0 ? "increase" : "decrease"}"
+            d="
+              M${scale(l.to)},${l.y}
+              m${-HEAD * unit},${-HEAD}
+              l${HEAD * unit},${HEAD}
+              l${-HEAD * unit},${HEAD}"
+          />
+        </g>
         <text x=${scale(l.from) + -2 * unit} y=${l.y + 4}
           class="from ${unit > 0 ? "left" : "right"}">
           ${formatter(l.from)}
