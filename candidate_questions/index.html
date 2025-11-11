@@ -1,10 +1,27 @@
 <%= await t.include("lib/_head.html") %>
 
-<%= await t.include("./_contents.html", {
-  candidates: COPY.candidates,
-  questions: COPY.questions,
-  labels: COPY.labels,
-  COPY
-}) %>
+<div class="app"></div>
+<br>
+<div class="credit">Development: <%= COPY.labels.credit %></div>
+
+<%
+  for (var c of COPY.candidates) {
+    for (var question of COPY.questions) {
+      var q = question.short;
+      var text = c[q] || `*${COPY.labels.noresponse}*`;
+      text = text.replace(/•/g, "-").replace(/\n{1}/g, "\n\n").replace(/ {2,}/g, " ");
+      c[q] = t.renderMarkdown(text);
+    }
+  }
+%>
+
+<script type="text/javascript">
+  window.QUESTIONS = <%= JSON.stringify(COPY.questions) %>;
+  window.CANDIDATES = <%= JSON.stringify(COPY.candidates) %>;
+  window.LABELS = <%= JSON.stringify(COPY.labels) %>;
+  window.BIO = <%= JSON.stringify(COPY.bio) %>;
+</script>
+
+<script src="./graphic.js" type="module"></script>
 
 <%= await t.include("lib/_foot.html") %>

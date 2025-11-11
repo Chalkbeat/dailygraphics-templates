@@ -81,6 +81,6 @@ Leaving that column blank means a graphic will appear on all pages.
   <% if (COPY.labels.credit) { %><p>Credit: <%= COPY.labels.credit %></p><% } %>
 </div>
 
-<script src="./graphic.js"></script>
+<script src="./graphic.js" type="module"></script>
 
 <%= await t.include("lib/_foot.html") %>
