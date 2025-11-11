@@ -1,4 +1,10 @@
 module.exports = {
+  cbLogo: "#3666EC",
+  cbBureau: "#03938F",
+  vbLogo: "#7E509E",
+  vbBureau: "#331B3D",
+  hbLogo: "#F25A4D",
+  hbBureau: "#DD405E",
   purple1: "#855279",
   purple2: "#B575BB",
   purple3: "#DABADD",
@@ -18,5 +24,11 @@ module.exports = {
   gray1: "#393939",
   gray2: "#828282",
   gray3: "#DCDCDC",
-  gray4: "#ECECEC"
+  gray4: "#ECECEC",
+  red1: "#AE5252",
+  red2: "#F77575",
+  red3: "#F1BFBF",
+  green1: "#4A8B44",
+  green2: "#19AB76",
+  green3: "#A7DCBC"
 };
