@@ -29,8 +29,29 @@ export async function geocode(address) {
 }
 
 function jsonp(url, callback = "callback") {
+  let iframe = document.createElement("iframe");
+  iframe.style.width = "1px";
+  iframe.style.height = "1px";
+  iframe.style.position = "absolute";
+  iframe.style.left = "-1000px";
+  iframe.sandbox = "allow-scripts";
+  let doc = `
+    <script>
+      window.${callback} = function(response) {
+        let message = { response };
+        window.parent.postMessage(message, "${window.location.origin}");
+      };
+      let script = document.createElement("script");
+      script.src = "${url}";
+      script.onerror = function(err) {
+        window.parent.postMessage({ error: "JSONP call returned a server error." }, "${window.location.origin}");
+      };
+      document.documentElement.append(script);
+    </script>
+  `;
+  iframe.srcdoc = doc;
+  document.body.append(iframe);
   return new Promise((ok, fail) => {
-    let iframe = document.createElement("iframe");
     let onmessage = function(e) {
       if (e.source == iframe.contentWindow) {
         iframe.remove();
@@ -43,27 +64,5 @@ function jsonp(url, callback = "callback") {
       }
     };
     window.addEventListener("message", onmessage);
-    iframe.style.width = "1px";
-    iframe.style.height = "1px";
-    iframe.style.position = "absolute";
-    iframe.style.left = "-1000px";
-    iframe.sandbox = "allow-scripts";
-    let doc = `
-      <script>
-        window.${callback} = function(response) {
-          let message = { response };
-          window.parent.postMessage(message, "${window.location.origin}");
-        };
-        let script = document.createElement("script");
-        let params = new URLSearchParams(window.location.search);
-        script.src = "${url}";
-        script.onerror = function(err) {
-          window.parent.postMessage({ error: "JSONP call returned a server error." }, "${window.location.origin}");
-        };
-        document.documentElement.append(script);
-      </script>
-    `;
-    iframe.srcdoc = doc;
-    document.body.append(iframe);
   });
 }
