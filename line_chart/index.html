@@ -14,7 +14,7 @@
 
 <div class="graphic <%= groups.size > 1 ? "small-multiple" : "single" %>" role="img"
 <% if (COPY.labels.screenreader) { %>
-  aria-label="<%- labels.screenreader %>"
+  aria-label="<%- COPY.labels.screenreader %>"
 <% } %>
 >
 <% for (var group of groups) { %>
